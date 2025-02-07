@@ -23,7 +23,7 @@ const App = () => {
   // Delete an expense
   const deleteExpense = (id) => {
     axios.delete(`http://localhost:3000/expenses/${id}`)
-      .then(() => setExpenses(expenses.filter((e) => e.id !== id)))
+      .then(() => setExpenses(expenses.filter((e) => e._id !== id)))
       .catch((error) => console.error(error));
   };
 

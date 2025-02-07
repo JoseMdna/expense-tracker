@@ -1,36 +1,52 @@
 import React, { useState } from 'react';
-import EditExpense from './EditExpense';
+import axios from 'axios';
 
-const ExpenseList = ({ expenses, setExpenses, deleteExpense }) => {
-  const [editingExpense, setEditingExpense] = useState(null);
+const EditExpense = ({ expense, onUpdate }) => {
+  const [description, setDescription] = useState(expense.description);
+  const [amount, setAmount] = useState(expense.amount);
+  const [date, setDate] = useState(expense.date);
+  const [category, setCategory] = useState(expense.category);
 
-  const handleEdit = (expense) => {
-    setEditingExpense(expense);
-  };
-
-  const handleUpdate = (updatedExpense) => {
-    setEditingExpense(null);
-    // Update the expense in the list
-    const updatedExpenses = expenses.map((expense) =>
-      expense.id === updatedExpense.id ? updatedExpense : expense
-    );
-    setExpenses(updatedExpenses);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const updatedExpense = { description, amount, date, category };
+    axios.put(`http://localhost:3000/expenses/${expense._id}`, updatedExpense)
+      .then((response) => onUpdate(response.data))
+      .catch((error) => console.error(error));
   };
 
   return (
-    <div>
-      {expenses.map((expense) => (
-        <div key={expense.id}>
-          <p>{expense.description} - ${expense.amount} - {expense.date} - {expense.category}</p>
-          <button onClick={() => handleEdit(expense)}>Edit</button>
-          <button onClick={() => deleteExpense(expense.id)}>Delete</button>
-          {editingExpense && editingExpense.id === expense.id && (
-            <EditExpense expense={expense} onUpdate={handleUpdate} />
-          )}
-        </div>
-      ))}
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        required
+      />
+      <input
+        type="number"
+        placeholder="Amount"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        required
+      />
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Category"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        required
+      />
+      <button type="submit">Update Expense</button>
+    </form>
   );
 };
 
-export default ExpenseList;
+export default EditExpense;
