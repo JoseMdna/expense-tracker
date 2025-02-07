@@ -1,6 +1,5 @@
-// File: src/api.js (Front-End)
 
-const API_BASE = process.env.REACT_APP_API_URL;
+const API_BASE = process.env.REACT_APP_API_URL.replace(/\/+$/, '');
 
 export async function fetchExpenses() {
   try {
