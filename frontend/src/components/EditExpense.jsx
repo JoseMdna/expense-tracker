@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { updateExpense } from '../api';
 
 const EditExpense = ({ expense, onUpdate }) => {
   const [description, setDescription] = useState(expense.description);
@@ -10,8 +10,8 @@ const EditExpense = ({ expense, onUpdate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedExpense = { description, amount, date, category };
-    axios.put(`http://localhost:3000/expenses/${expense._id}`, updatedExpense)
-      .then((response) => onUpdate(response.data))
+    updateExpense(expense._id, updatedExpense)
+      .then((response) => onUpdate(response))
       .catch((error) => console.error(error));
   };
 

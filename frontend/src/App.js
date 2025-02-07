@@ -1,37 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// File: src/App.js (Front-End)
+import React, { useEffect, useState } from 'react';
+import { fetchExpenses, addExpense, deleteExpense, updateExpense } from './api';
 import ExpenseList from './components/ExpenseList';
 import AddExpense from './components/AddExpense';
 import './App.css';
 
-const App = () => {
+function App() {
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/expenses')
-      .then((response) => setExpenses(response.data))
-      .catch((error) => console.error(error));
+    fetchExpenses()
+      .then(data => setExpenses(data))
+      .catch(err => console.error(err));
   }, []);
 
-  const addExpense = (expense) => {
-    axios.post('http://localhost:3000/expenses', expense)
-      .then((response) => setExpenses([...expenses, response.data]))
-      .catch((error) => console.error(error));
+  const handleAddExpense = (expense) => {
+    addExpense(expense)
+      .then(newExpense => setExpenses([...expenses, newExpense]))
+      .catch(err => console.error(err));
   };
 
-  const deleteExpense = (id) => {
-    axios.delete(`http://localhost:3000/expenses/${id}`)
-      .then(() => setExpenses(expenses.filter((e) => e._id !== id)))
-      .catch((error) => console.error(error));
+  const handleDeleteExpense = (id) => {
+    deleteExpense(id)
+      .then(() => setExpenses(expenses.filter(expense => expense._id !== id)))
+      .catch(err => console.error(err));
+  };
+
+  const handleUpdateExpense = (id, updatedExpense) => {
+    updateExpense(id, updatedExpense)
+      .then(newExpense => {
+        setExpenses(expenses.map(expense => expense._id === id ? newExpense : expense));
+      })
+      .catch(err => console.error(err));
   };
 
   return (
     <div className="container">
       <h1>Expense Tracker</h1>
-      <AddExpense addExpense={addExpense} />
-      <ExpenseList expenses={expenses} setExpenses={setExpenses} deleteExpense={deleteExpense} />
+      <AddExpense addExpense={handleAddExpense} />
+      <ExpenseList expenses={expenses} setExpenses={setExpenses} deleteExpense={handleDeleteExpense} updateExpense={handleUpdateExpense} />
     </div>
   );
-};
+}
 
 export default App;

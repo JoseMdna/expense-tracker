@@ -7,14 +7,24 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// Configure CORS to allow requests from your frontend
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://expense-tracker-0b9406567e39.herokuapp.com'], // Allow requests from these origins
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
+
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Could not connect to MongoDB', err));
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open');
+db.once('open', () => {
+  console.log('Connected to the database');
+});
 
 const expenseSchema = new mongoose.Schema({
   description: String,
@@ -78,4 +88,11 @@ app.delete('/expenses/:id', async (req, res) => {
   }
 });
 
-app.listen(PORT);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
