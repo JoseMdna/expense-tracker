@@ -9,10 +9,11 @@ const PORT = process.env.PORT || 3000;
 
 // Configure CORS to allow requests from your frontend
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://expense-tracker-0b9406567e39.herokuapp.com'], // Allow requests from these origins
+  origin: ['http://localhost:5173', 'https://incredible-churros-516c2f.netlify.app'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 }));
+
 
 app.use(bodyParser.json());
 
