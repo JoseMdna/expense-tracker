@@ -7,20 +7,15 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
+db.once('open');
 
-// Expense Schema
 const expenseSchema = new mongoose.Schema({
   description: String,
   amount: Number,
@@ -30,8 +25,6 @@ const expenseSchema = new mongoose.Schema({
 
 const Expense = mongoose.model('Expense', expenseSchema);
 
-// Routes
-// GET all expenses
 app.get('/expenses', async (req, res) => {
   try {
     const expenses = await Expense.find();
@@ -41,7 +34,6 @@ app.get('/expenses', async (req, res) => {
   }
 });
 
-// POST a new expense
 app.post('/expenses', async (req, res) => {
   const newExpense = new Expense({
     description: req.body.description,
@@ -58,7 +50,6 @@ app.post('/expenses', async (req, res) => {
   }
 });
 
-// PUT (update) an expense
 app.put('/expenses/:id', async (req, res) => {
   try {
     const updatedExpense = await Expense.findByIdAndUpdate(
@@ -75,7 +66,6 @@ app.put('/expenses/:id', async (req, res) => {
   }
 });
 
-// DELETE an expense
 app.delete('/expenses/:id', async (req, res) => {
   try {
     const deletedExpense = await Expense.findByIdAndDelete(req.params.id);
@@ -88,7 +78,4 @@ app.delete('/expenses/:id', async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+app.listen(PORT);

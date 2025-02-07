@@ -10,7 +10,6 @@ const ExpenseList = ({ expenses = [], setExpenses, deleteExpense }) => {
 
   const handleUpdate = (updatedExpense) => {
     setEditingExpense(null);
-    // Update the expense in the list
     const updatedExpenses = expenses.map((expense) =>
       expense._id === updatedExpense._id ? updatedExpense : expense
     );
