@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ExpenseList from './components/ExpenseList';
 import AddExpense from './components/AddExpense';
+import './App.css';
 
 const App = () => {
   const [expenses, setExpenses] = useState([]);
@@ -28,7 +29,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Expense Tracker</h1>
       <AddExpense addExpense={addExpense} />
       <ExpenseList expenses={expenses} setExpenses={setExpenses} deleteExpense={deleteExpense} />

@@ -20,7 +20,7 @@ const ExpenseList = ({ expenses = [], setExpenses, deleteExpense }) => {
   return (
     <div>
       {expenses.map((expense) => (
-        <div key={expense._id}>
+        <div key={expense._id} className="expense-item">
           <p>{expense.description} - ${expense.amount} - {expense.date} - {expense.category}</p>
           <button onClick={() => handleEdit(expense)}>Edit</button>
           <button onClick={() => deleteExpense(expense._id)}>Delete</button>
