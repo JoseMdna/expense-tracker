@@ -10,7 +10,6 @@ body {
 
 h1 {
   text-align: center;
-  color: #4CAF50;
 }
 
 .container {
@@ -23,7 +22,7 @@ h1 {
 }
 
 button {
-  background-color: #4CAF50;
+  background-color: #145999;
   color: #FFFFFF;
   border: none;
   padding: 10px 20px;
@@ -34,7 +33,7 @@ button {
 }
 
 button:hover {
-  background-color: #45A049;
+  background-color: #1B4579;
 }
 
 input[type="text"],
