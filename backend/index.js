@@ -7,7 +7,6 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configure CORS to allow requests from your frontend
 app.use(cors({
   origin: ['http://localhost:5173', 'https://incredible-churros-516c2f.netlify.app'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

@@ -1,4 +1,3 @@
-// File: src/App.js (Front-End)
 import React, { useEffect, useState } from 'react';
 import { fetchExpenses, addExpense, deleteExpense, updateExpense } from './api';
 import ExpenseList from './components/ExpenseList';
